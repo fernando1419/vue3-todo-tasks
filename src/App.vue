@@ -12,13 +12,23 @@ const handleAddTask = (task: string) => {
    tasks.value.unshift(newTask);
    toast.success('Task added successfully', { autoClose: 1500 });
 };
+
+const markAsCompleted = (id: string) => {
+   const selectedTask = tasks.value.find(task => task.id === id);
+   if (selectedTask) {
+      selectedTask.isCompleted = !selectedTask.isCompleted;
+   }
+   // Other way to do that:
+   // tasks.value.filter(task => task.id === id).map(selectedTask => selectedTask.isCompleted = !selectedTask.isCompleted);
+}
+
 </script>
 
 <template>
    <main class="container-fluid">
       <h2 class="title">Tasks App</h2>
       <AddTaskForm @addTask="handleAddTask" />
-      <TaskList :tasks />
+      <TaskList :tasks @toggle-is-completed="markAsCompleted" />
    </main>
 </template>
 
