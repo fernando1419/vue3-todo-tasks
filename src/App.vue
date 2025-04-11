@@ -1,63 +1,26 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import AddTaskForm from "@components/AddTaskForm.vue";
 
-const inputRef = ref(); // reference to Input control in DOM. // inputRef.value.value
-const taskValue = ref(''); // reference to the value (text) of the Input control.
-const taskErrorMessage = ref('');
-
-const addTask = async () => {
-   inputRef.value.focus();
-   if (!canSaveTask()) return;
-
+const handleAddTask = (task: string) => {
    // TODO: ADD TASK HERE...
-   await new Promise((resolve) => setTimeout(resolve, 1000));
-
-   taskValue.value = '';
-   inputRef.value.focus();
-};
-
-const canSaveTask = (): boolean => {
-   if (taskValue.value.trim().length < 3) {
-      taskErrorMessage.value = 'Task description must be at least 3 characters long.';
-      return false;
-   }
-
-   if (taskValue.value.trim() === '') {
-      taskErrorMessage.value = 'Please provide a valid description for adding a task!.';
-      return false;
-   }
-
-   taskErrorMessage.value = '';
-   return true;
+   console.log(task);
 };
 </script>
 
 <template>
-   <main class="container">
-      <h3 class="form-title">Add new task</h3>
-      <form @submit.prevent="addTask">
-         <fieldset role="group">
-            <input ref="inputRef" v-model.trim="taskValue" type="text" placeholder="Enter description for the task"
-               aria-label="Text" :aria-invalid="!!taskErrorMessage || undefined" @input="canSaveTask" />
-            <input type="submit" class="secondary" value="Add" />
-         </fieldset>
-         <small v-if="taskErrorMessage" class="error"> {{ taskErrorMessage }} </small>
-      </form>
-      <p>{{ taskValue }}</p>
+   <main class="container-fluid">
+      <h2 class="title">Tasks App</h2>
+      <AddTaskForm @add-task="handleAddTask" />
    </main>
 </template>
 
-<style scoped>
-.container {
+<style>
+.container-fluid {
    width: 60%;
+   margin: 1rem auto 0 auto;
 }
 
-.form-title {
-   margin-bottom: 0.5rem;
-}
-
-.error {
-   color: rgb(128, 11, 11);
-   font-size: 0.7rem;
+.title {
+   text-align: center
 }
 </style>
