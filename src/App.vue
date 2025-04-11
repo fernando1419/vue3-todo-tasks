@@ -2,11 +2,14 @@
 import Task from "@/types";
 import AddTaskForm from "@components/AddTaskForm.vue";
 import { ref } from "vue";
+import { toast } from 'vue3-toastify';
+
 const tasks = ref<Task[]>([]);
 
 const handleAddTask = (task: string) => {
    const newTask: Task = { id: crypto.randomUUID(), title: task, isCompleted: false };
    tasks.value.push(newTask);
+   toast.success('Task added successfully', { autoClose: 1500 });
 };
 
 </script>
