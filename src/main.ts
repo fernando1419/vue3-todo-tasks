@@ -8,6 +8,6 @@ const app = createApp(App);
 app.use(Vue3Toastify, {
    autoClose: 3000,
    position: 'top-right',
-   theme: 'light', // o 'dark'
+   theme: 'light', // or 'dark'
 },
 ).mount('#app');

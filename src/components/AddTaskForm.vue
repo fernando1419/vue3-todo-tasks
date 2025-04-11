@@ -8,12 +8,14 @@ const emit = defineEmits<{
 }>();
 
 const canSaveTask = (): boolean => {
-   if (taskValue.value.trim().length < 3) {
+   const task = taskValue.value.trim();
+
+   if (task.length < 3) {
       taskErrorMessage.value = 'Task description must be at least 3 characters long.';
       return false;
    }
 
-   if (taskValue.value.trim() === '') {
+   if (task === '') {
       taskErrorMessage.value = 'Please provide a valid description for adding a task!.';
       return false;
    }
@@ -22,7 +24,7 @@ const canSaveTask = (): boolean => {
    return true;
 };
 
-const addTask = async () => {
+const addTask = () => {
    inputRef.value.focus();
    if (!canSaveTask()) return;
 
