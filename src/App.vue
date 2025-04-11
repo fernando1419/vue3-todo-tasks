@@ -20,7 +20,17 @@ const markAsCompleted = (id: string) => {
    }
    // Other way to do that:
    // tasks.value.filter(task => task.id === id).map(selectedTask => selectedTask.isCompleted = !selectedTask.isCompleted);
-}
+};
+
+const handleTaskDeletion = (id: string) => {
+   const index = tasks.value.findIndex(task => task.id === id);
+   if (index !== -1) {
+      tasks.value.splice(index, 1); // modifies the original array, unlike slice that does not modify the original array.
+      toast.info(`Task with id "${id}" was successfully deleted!`, { autoClose: 2000 });
+   }
+   // other way to do the deletion:
+   // tasks.value = tasks.value.filter(task => task.id !== id)
+};
 
 </script>
 
@@ -28,7 +38,7 @@ const markAsCompleted = (id: string) => {
    <main class="container-fluid">
       <h2 class="title">Tasks App</h2>
       <AddTaskForm @addTask="handleAddTask" />
-      <TaskList :tasks @toggle-is-completed="markAsCompleted" />
+      <TaskList :tasks @toggle-is-completed="markAsCompleted" @delete-task="handleTaskDeletion" />
    </main>
 </template>
 
@@ -40,5 +50,9 @@ const markAsCompleted = (id: string) => {
 
 .title {
    text-align: center
+}
+
+.Toastify__toast-container {
+   width: fit-content;
 }
 </style>
