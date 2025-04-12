@@ -3,20 +3,20 @@ import type { Task, TaskFilter } from "@/types";
 import AddTaskForm from "@components/AddTaskForm.vue";
 import FilterButton from "@components/FilterButton.vue";
 import TaskList from "@components/TaskList.vue";
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { toast } from 'vue3-toastify';
 
 const filter = ref<TaskFilter>("all");
-const tasks = ref<Task[]>([]);
+const tasks = reactive<Task[]>([]);
 
 const handleAddTask = (task: string) => {
    const newTask: Task = { id: crypto.randomUUID(), title: task, isCompleted: false };
-   tasks.value.unshift(newTask);
+   tasks.unshift(newTask);
    toast.success('Task added successfully', { autoClose: 1500 });
 };
 
 const markAsCompleted = (id: string) => {
-   const selectedTask = tasks.value.find(task => task.id === id);
+   const selectedTask = tasks.find(task => task.id === id);
    if (selectedTask) {
       selectedTask.isCompleted = !selectedTask.isCompleted;
    }
@@ -25,16 +25,16 @@ const markAsCompleted = (id: string) => {
 };
 
 const handleTaskDeletion = (id: string) => {
-   const index = tasks.value.findIndex(task => task.id === id);
+   const index = tasks.findIndex(task => task.id === id);
    if (index !== -1) {
-      tasks.value.splice(index, 1); // modifies the original array, unlike slice that does not modify the original array.
+      tasks.splice(index, 1); // modifies the original array, unlike slice that does not modify the original array.
       toast.info(`Task id: "${id}" successfully deleted!`, { autoClose: 2000 });
    }
    // other way to do the deletion:
    // tasks.value = tasks.value.filter(task => task.id !== id)
 };
 
-const totalCompleted = computed(() => tasks.value.filter(task => task.isCompleted).length);
+const totalCompleted = computed(() => tasks.filter(task => task.isCompleted).length);
 
 const handleSetFilter = (value: TaskFilter) => {
    filter.value = value;
@@ -43,13 +43,13 @@ const handleSetFilter = (value: TaskFilter) => {
 const filteredTasks = computed(() => {
    switch (filter.value) {
       case "all":
-         return tasks.value;
+         return tasks;
       case "todo":
-         return tasks.value.filter((task) => !task.isCompleted);
+         return tasks.filter((task) => !task.isCompleted);
       case "done":
-         return tasks.value.filter((task) => task.isCompleted);
+         return tasks.filter((task) => task.isCompleted);
       default:
-         return tasks.value;
+         return tasks;
    }
 });
 
