@@ -1,25 +1,17 @@
 <script lang="ts" setup>
-import type { Task } from '@/types';
+import { useTasksStore } from "@/stores/tasksStore";
+const store = useTasksStore();
 
-const props = defineProps<{ tasks: Task[]; }>();
-// emits to the parent because tasks data is defined in the parent, it is not correct that we modify the state of the data where it was not defined.
-const emits = defineEmits<{
-   toggleCompleted: [id: string];
-   deleteTask: [id: string];
-}>();
 </script>
 
 <template>
    <TransitionGroup name="task-list">
-      <article v-for="task in props.tasks" :key="task.id" class="flex">
+      <article v-for="task in store.filteredTasks" :key="task.id" class="flex">
          <label>
-            <!-- :checked is needed to bind the state of the checkbox with task.isCompleted field because we are not using v-model -->
-            <!-- and we do this way (emitting an event) because the state of the task is defined in the parent, if we use v-model -->
-            <!-- we will modify the state of the data here in this component, where it was not defined -->
-            <input type="checkbox" :checked="task.isCompleted" @input="emits('toggleCompleted', task.id)" />
+            <input type="checkbox" :checked="task.isCompleted" @input="store.toggleCompleted(task.id)" />
             <span :class="{ complete: task.isCompleted }"> {{ task.title }} </span>
          </label>
-         <button class="outline secondary" @click="emits('deleteTask', task.id)">Delete</button>
+         <button class="outline secondary" @click="store.deleteTask(task.id)">Delete</button>
       </article>
    </TransitionGroup>
 

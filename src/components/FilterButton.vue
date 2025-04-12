@@ -1,19 +1,16 @@
 <script setup lang="ts">
+import { useTasksStore } from "@/stores/tasksStore";
 import { TaskFilter } from '@/types';
+const store = useTasksStore();
 
 const props = defineProps<{
    filter: TaskFilter;
-   activeFilter: TaskFilter;
-}>();
-
-const emits = defineEmits<{
-   setFilter: [filter: TaskFilter];
 }>();
 </script>
 
 <template>
-   <button class="secondary" :class="{ contrast: props.activeFilter === props.filter }"
-      @click="emits('setFilter', props.filter)"> {{ props.filter }}
+   <button class="secondary" :class="{ contrast: store.filter === props.filter }" @click="store.filter = props.filter">
+      {{ props.filter }}
    </button>
 </template>
 

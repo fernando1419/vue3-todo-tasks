@@ -1,11 +1,11 @@
 <script lang="ts" setup>
+import { useTasksStore } from "@/stores/tasksStore";
 import { ref } from "vue";
+
+const store = useTasksStore();
 const inputRef = ref(); // reference to Input control in DOM. // inputRef.value.value
 const taskValue = ref(''); // reference to the value (text) of the Input control.
 const taskErrorMessage = ref('');
-const emit = defineEmits<{
-   addTask: [newTask: string];
-}>();
 
 const canSaveTask = (): boolean => {
    const task = taskValue.value.trim();
@@ -28,7 +28,7 @@ const addTask = () => {
    inputRef.value.focus();
    if (!canSaveTask()) return;
 
-   emit('addTask', taskValue.value);
+   store.addTask(taskValue.value);
    taskValue.value = '';
    inputRef.value.focus();
 };
