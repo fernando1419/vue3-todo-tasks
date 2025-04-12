@@ -1,8 +1,8 @@
-interface Task {
+export interface Task {
    id: string;
    title: string;
    isCompleted: boolean;
 };
 
-export default Task;
+export type TaskFilter = 'all' | 'todo' | 'done';
 
